@@ -40,11 +40,18 @@ class CircularProgressBar : View {
 
     var progress: Int = 0
         set(value) {
-            if(value<=20) field = 1
-            else if (value<=40) field = 2
-            else if (value<=60) field = 3
-            else if (value<=80) field = 4
-            else field = 5
+            var part = (360/(intervalAngle+progressAngle)).toInt()
+            for (i in 1 until part+1){
+                if(value <= 100/part*i){
+                    field = i
+                    break
+                }
+            }
+//            if(value<=20) field = 1
+//            else if (value<=40) field = 2
+//            else if (value<=60) field = 3
+//            else if (value<=80) field = 4
+//            else field = 5
 
             invalidate()
         }
