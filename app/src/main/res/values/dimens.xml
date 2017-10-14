@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="default_stroke_width">7dp</dimen>
+
+    <dimen name="progressBarStroke">4dp</dimen>
+    <dimen name="progressBarIconArea">40dp</dimen>
+    <dimen name="progressBarPartial">5</dimen>
+    <dimen name="progressBarInterval">8</dimen>
 </resources>

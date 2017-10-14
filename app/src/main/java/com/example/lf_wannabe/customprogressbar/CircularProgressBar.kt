@@ -1,11 +1,13 @@
 package com.example.lf_wannabe.customprogressbar
 
 import android.content.Context
+import android.content.ReceiverCallNotAllowedException
 import android.content.res.TypedArray
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 
 /**
@@ -13,18 +15,27 @@ import android.view.View
  */
 class CircularProgressBar : View {
 
-    private var intervalAngle = 8f
-    private var progressAngle = 64f
-    private var strokeWidth: Float = resources.getDimension(R.dimen.default_stroke_width)
-    private var color: Int = Color.BLACK
-    private var unselectedColor: Int = Color.WHITE
-    private var startAngle:Float = -90f
-    private lateinit var rectF: RectF
     private lateinit var selectedBarPaint: Paint
     private lateinit var unselectedBarPaint: Paint
+    private var intervalAngle = 8f
+    private var partialAngle = 64f
+    private var strokeWidth = 12f
+    private var icon: Drawable? = null
 
-    private var bgImg: Drawable? = null
+    private var viewRectF: RectF = RectF()
+    private var iconRectF: RectF = RectF()
 
+    var progress: Int = 0
+        set(value) {
+            var part = (360/(intervalAngle+partialAngle)).toInt()
+            for (i in 1 until part+1){
+                if(value <= 100/part*i){
+                    field = i
+                    break
+                }
+            }
+            invalidate()
+        }
 
     constructor(context: Context) : super(context) {
         init(context, null)
@@ -38,40 +49,39 @@ class CircularProgressBar : View {
         init(context, attrs)
     }
 
-    var progress: Int = 0
-        set(value) {
-            var part = (360/(intervalAngle+progressAngle)).toInt()
-            for (i in 1 until part+1){
-                if(value <= 100/part*i){
-                    field = i
-                    break
-                }
-            }
-            invalidate()
-        }
 
     private fun init(context: Context, attrs: AttributeSet?) {
-        rectF = RectF()
+
         var typedArray: TypedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.CP, 0, 0)
+        var selectedColor: Int
+        var unselectedColor: Int
 
         try {
-            progress = typedArray.getInt(R.styleable.CP_progress, progress)
-            strokeWidth  = typedArray.getDimension(R.styleable.CP_progressbar_width,strokeWidth)
-            color = typedArray.getColor(R.styleable.CP_progressbar_color, color)
-            unselectedColor = typedArray.getColor(R.styleable.CP_progressbar_unselectedcolor, unselectedColor)
-            intervalAngle = typedArray.getFloat(R.styleable.CP_progressbar_interval, intervalAngle)
-            progressAngle = typedArray.getFloat(R.styleable.CP_progressbar_partial, progressAngle)
-            bgImg = typedArray.getDrawable(R.styleable.CP_progressbar_bgimg)
+            progress = typedArray.getInt(R.styleable.CP_progress, 0)
+            strokeWidth = typedArray.getDimension(R.styleable.CP_progressbar_stroke_width, 12f)
+            intervalAngle = typedArray.getFloat(R.styleable.CP_progressbar_interval, 8f)
+            typedArray.getFloat(R.styleable.CP_progressbar_partial, 5f).let {
+                partialAngle = 360/it - intervalAngle
+            }
+
+            icon = typedArray.getDrawable(R.styleable.CP_progressbar_icon_src)
+            var iconWidth = typedArray.getDimension(R.styleable.CP_progressbar_icon_width, 40f)
+            var iconHeight = typedArray.getDimension(R.styleable.CP_progressbar_icon_height, 40f)
+            iconRectF.set(0f, 0f, iconWidth, iconHeight)
+
+            selectedColor = typedArray.getColor(R.styleable.CP_progressbar_selected_color, Color.GRAY)
+            unselectedColor = typedArray.getColor(R.styleable.CP_progressbar_unselected_color, Color.BLACK)
+
         } finally {
             typedArray.recycle()
         }
 
-        selectedBarPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        selectedBarPaint.color = color
+        selectedBarPaint = Paint();
+        selectedBarPaint.color = selectedColor
         selectedBarPaint.style = Paint.Style.STROKE
         selectedBarPaint.strokeWidth = strokeWidth
 
-        unselectedBarPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+        unselectedBarPaint = Paint();
         unselectedBarPaint.color = unselectedColor
         unselectedBarPaint.style = Paint.Style.STROKE
         unselectedBarPaint.strokeWidth = strokeWidth
@@ -80,18 +90,19 @@ class CircularProgressBar : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        bgImg?. let {
-            it.setBounds((rectF.centerX() - it.intrinsicWidth/2).toInt(),
-                    (rectF.centerY() - it.intrinsicHeight/2).toInt(),
-                    (rectF.centerX() - it.intrinsicWidth/2).toInt() + it.intrinsicWidth,
-                    (rectF.centerY() - it.intrinsicHeight/2).toInt() + it.intrinsicHeight)
+        icon?. let {
+            it.setBounds((viewRectF.centerX() - iconRectF.width()/2).toInt(),
+                    (viewRectF.centerY() - iconRectF.height()/2).toInt(),
+                    (viewRectF.centerX() - iconRectF.width()/2).toInt() + iconRectF.width().toInt(),
+                    (viewRectF.centerY() - iconRectF.height()/2).toInt() + iconRectF.height().toInt())
             it.draw(canvas)
         }
 
-        for ( i in 0 until (360/(intervalAngle+progressAngle)).toInt()){
-            canvas!!.drawArc(rectF,
-                    startAngle + intervalAngle/2 + (intervalAngle+progressAngle)*i,
-                    progressAngle,
+        for ( i in 0 until (360/(intervalAngle+partialAngle)).toInt()){
+            Log.i("MangoB-Progress", "index : $i $intervalAngle $partialAngle")
+            canvas!!.drawArc(viewRectF,
+                    -90f + intervalAngle/2 + (intervalAngle+partialAngle)*i,
+                    partialAngle,
                     false,
                     if(i<progress) selectedBarPaint else unselectedBarPaint)
         }
@@ -104,6 +115,6 @@ class CircularProgressBar : View {
         val min = Math.min(width, height)
         setMeasuredDimension(min, min)
 
-        rectF.set(0 + strokeWidth/2, 0 + strokeWidth/2, min - strokeWidth/2, min - strokeWidth/2)
+        viewRectF.set(0 + strokeWidth/2, 0 + strokeWidth/2, min - strokeWidth/2, min - strokeWidth/2)
     }
 }

@@ -2,30 +2,34 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#454545"
     tools:context="com.example.lf_wannabe.customprogressbar.MainActivity">
 
     <com.example.lf_wannabe.customprogressbar.CircularProgressBar
         xmlns:cp="http://schemas.android.com/apk/res/com.example.lf_wannabe.customprogressbar"
         android:id="@+id/cp"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@color/colorPrimary"
+        android:background="#00000000"
         app:layout_constraintBottom_toTopOf="@+id/seekBarProgress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         cp:progress="65"
-        cp:progressbar_color="#aaf5f5f5"
-        cp:progressbar_width="16px"
-        cp:progressbar_bgimg="@drawable/ic_action_bgimg"
-        cp:progressbar_unselectedcolor="#33f5f5f5"/>
+        cp:progressbar_selected_color="@color/progressSelected"
+        cp:progressbar_unselected_color="@color/progressUnselected"
+        cp:progressbar_stroke_width="@dimen/progressBarStroke"
+        cp:progressbar_icon_src="@drawable/ic_action_bgimg"
+        cp:progressbar_icon_width="@dimen/progressBarIconArea"
+        cp:progressbar_icon_height="@dimen/progressBarIconArea"
+        cp:progressbar_interval="@dimen/progressBarInterval"
+        cp:progressbar_partial="@dimen/progressBarPartial" />
 
     <SeekBar
         android:id="@+id/seekBarProgress"

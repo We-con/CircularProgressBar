@@ -2,11 +2,16 @@
 <resources>
     <declare-styleable name="CP">
         <attr name="progress" format="integer" />
-        <attr name="progressbar_color" format="color" />
-        <attr name="progressbar_unselectedcolor" format="color" />
-        <attr name="progressbar_width" format="dimension" />
-        <attr name="progressbar_bgimg" format="reference|integer" />
+        <attr name="progressbar_selected_color" format="color" />
+        <attr name="progressbar_unselected_color" format="color" />
+
+        <attr name="progressbar_stroke_width" format="dimension" />"
+
+        <attr name="progressbar_icon_src" format="reference|integer" />
+        <attr name="progressbar_icon_width" format="float" />
+        <attr name="progressbar_icon_height" format="float" />
+
         <attr name="progressbar_interval" format="float" />
-        <attr name="progressbar_partial" format="float" />
+        <attr name="progressbar_partial" format="integer" />
     </declare-styleable>
 </resources>
