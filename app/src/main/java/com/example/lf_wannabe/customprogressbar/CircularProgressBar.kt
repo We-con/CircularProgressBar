@@ -47,12 +47,6 @@ class CircularProgressBar : View {
                     break
                 }
             }
-//            if(value<=20) field = 1
-//            else if (value<=40) field = 2
-//            else if (value<=60) field = 3
-//            else if (value<=80) field = 4
-//            else field = 5
-
             invalidate()
         }
 
