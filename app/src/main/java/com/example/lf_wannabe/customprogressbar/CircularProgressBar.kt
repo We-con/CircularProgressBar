@@ -29,9 +29,12 @@ class CircularProgressBar : View {
         set(value) {
             var part = (360/(intervalAngle+partialAngle)).toInt()
             for (i in 1 until part+1){
-                if(value <= 100/part*i){
-                    field = i
-                    break
+                if(value <= 0) {
+                    field = 0
+                    break;
+                } else if(value <= 100/part*i) {
+                    field = i;
+                    break;
                 }
             }
             invalidate()
