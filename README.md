@@ -2,25 +2,15 @@
 
 ## you can customize both the interval and bar
 
-
-
 #### *** Properies
 
 * 'app:progress'                                     (interger), default  0
-
 * 'app:progressbar_color'                      (color),  default Color.BLACK
-
 * 'app:progressbar_unselectedcolor'     (color), default Color.WHITE
-
 * 'app:progressbar_width'                      (dimension), default 7dp
-
 * 'app:progressbar_bgimg'                    (reference|interger)
-
 * 'app:progressbar_interval'                   (float), default 8f
-
 * 'app:progressbar_partial'                   (float), default 64f
-
-  ​
 
 ### default usage
 
@@ -48,8 +38,7 @@
 ### usage
 
 ~~~
-    <com.example.lf_wannabe.customprogressbar.CircularProgressBar
-        xmlns:cp="http://schemas.android.com/apk/res/com.example.lf_wannabe.customprogressbar"
+    <com.example.lf_wannabe.customprogressbar.CircularProgressBar        			xmlns:cp="http://schemas.android.com/apk/res/com.example.lf_wannabe.customprogressbar"
         android:id="@+id/cp"
         android:layout_width="300dp"
         android:layout_height="300dp"
