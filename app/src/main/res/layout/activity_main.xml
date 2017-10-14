@@ -24,6 +24,7 @@
         cp:progress="65"
         cp:progressbar_color="#aaf5f5f5"
         cp:progressbar_width="16px"
+        cp:progressbar_bgimg="@drawable/ic_action_bgimg"
         cp:progressbar_unselectedcolor="#33f5f5f5"/>
 
     <SeekBar

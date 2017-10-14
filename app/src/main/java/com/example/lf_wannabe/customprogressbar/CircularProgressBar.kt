@@ -2,12 +2,10 @@ package com.example.lf_wannabe.customprogressbar
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
-import android.graphics.drawable.ShapeDrawable
+import android.graphics.*
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 
 /**
@@ -24,6 +22,8 @@ class CircularProgressBar : View {
     private lateinit var rectF: RectF
     private lateinit var selectedBarPaint: Paint
     private lateinit var unselectedBarPaint: Paint
+
+    private var bgImg: Drawable? = null
 
 
     constructor(context: Context) : super(context) {
@@ -60,6 +60,7 @@ class CircularProgressBar : View {
             unselectedColor = typedArray.getColor(R.styleable.CP_progressbar_unselectedcolor, unselectedColor)
             intervalAngle = typedArray.getFloat(R.styleable.CP_progressbar_interval, intervalAngle)
             progressAngle = typedArray.getFloat(R.styleable.CP_progressbar_partial, progressAngle)
+            bgImg = typedArray.getDrawable(R.styleable.CP_progressbar_bgimg)
         } finally {
             typedArray.recycle()
         }
@@ -77,7 +78,14 @@ class CircularProgressBar : View {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        var angle: Float = 360f * progress / 100
+
+        bgImg?. let {
+            it.setBounds((rectF.centerX() - it.intrinsicWidth/2).toInt(),
+                    (rectF.centerY() - it.intrinsicHeight/2).toInt(),
+                    (rectF.centerX() - it.intrinsicWidth/2).toInt() + it.intrinsicWidth,
+                    (rectF.centerY() - it.intrinsicHeight/2).toInt() + it.intrinsicHeight)
+            it.draw(canvas)
+        }
 
         for ( i in 0 until (360/(intervalAngle+progressAngle)).toInt()){
             canvas!!.drawArc(rectF,
