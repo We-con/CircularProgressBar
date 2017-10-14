@@ -1,6 +1,8 @@
 #  CircularProgressBar with Partition
 
-## you can customize both the interval and bar
+### you can customize both the interval and bar
+
+
 
 #### *** Properies
 
@@ -37,8 +39,8 @@
 
 ### usage
 
-~~~
-    <com.example.lf_wannabe.customprogressbar.CircularProgressBar        			xmlns:cp="http://schemas.android.com/apk/res/com.example.lf_wannabe.customprogressbar"
+~~~xml
+<com.example.lf_wannabe.customprogressbar.CircularProgressBar        						xmlns:cp="http://schemas.android.com/apk/res/com.example.lf_wannabe.customprogressbar"
         android:id="@+id/cp"
         android:layout_width="300dp"
         android:layout_height="300dp"
