@@ -4,8 +4,9 @@
         <attr name="progress" format="integer" />
         <attr name="progressbar_selected_color" format="color" />
         <attr name="progressbar_unselected_color" format="color" />
+        <attr name="progressbar_alert_color" format="color" />
 
-        <attr name="progressbar_stroke_width" format="dimension" />"
+        <attr name="progressbar_stroke_width" format="dimension" />
 
         <attr name="progressbar_icon_src" format="reference|integer" />
         <attr name="progressbar_icon_width" format="float" />

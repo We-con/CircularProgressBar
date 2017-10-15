@@ -21,6 +21,7 @@ class CircularProgressBar : View {
     private var partialAngle = 64f
     private var strokeWidth = 12f
     private var icon: Drawable? = null
+    private var alertColor: Int ?= null
 
     private var viewRectF: RectF = RectF()
     private var iconRectF: RectF = RectF()
@@ -29,6 +30,7 @@ class CircularProgressBar : View {
         set(value) {
             var part = (360/(intervalAngle+partialAngle)).toInt()
             for (i in 1 until part+1){
+                progressIcon(value)
                 if(value <= 0) {
                     field = 0
                     break;
@@ -74,6 +76,7 @@ class CircularProgressBar : View {
 
             selectedColor = typedArray.getColor(R.styleable.CP_progressbar_selected_color, Color.GRAY)
             unselectedColor = typedArray.getColor(R.styleable.CP_progressbar_unselected_color, Color.BLACK)
+            alertColor = typedArray.getColor(R.styleable.CP_progressbar_alert_color, Color.RED)
 
         } finally {
             typedArray.recycle()
@@ -88,6 +91,8 @@ class CircularProgressBar : View {
         unselectedBarPaint.color = unselectedColor
         unselectedBarPaint.style = Paint.Style.STROKE
         unselectedBarPaint.strokeWidth = strokeWidth
+
+        progressIcon(progress)
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -102,7 +107,6 @@ class CircularProgressBar : View {
         }
 
         for ( i in 0 until (360/(intervalAngle+partialAngle)).toInt()){
-            Log.i("MangoB-Progress", "index : $i $intervalAngle $partialAngle")
             canvas!!.drawArc(viewRectF,
                     -90f + intervalAngle/2 + (intervalAngle+partialAngle)*i,
                     partialAngle,
@@ -119,5 +123,13 @@ class CircularProgressBar : View {
         setMeasuredDimension(min, min)
 
         viewRectF.set(0 + strokeWidth/2, 0 + strokeWidth/2, min - strokeWidth/2, min - strokeWidth/2)
+    }
+
+    private fun progressIcon(value: Int) {
+        if(value < 20) {
+            icon?.setColorFilter(alertColor!!, PorterDuff.Mode.SRC_ATOP)
+        } else {
+            icon?.setColorFilter(alertColor!!, PorterDuff.Mode.DST)
+        }
     }
 }
