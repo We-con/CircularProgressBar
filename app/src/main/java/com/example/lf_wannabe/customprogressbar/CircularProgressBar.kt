@@ -126,7 +126,7 @@ class CircularProgressBar : View {
     }
 
     private fun progressIcon(value: Int) {
-        if(value < 20) {
+        if(value <= 1) {
             icon?.setColorFilter(alertColor!!, PorterDuff.Mode.SRC_ATOP)
         } else {
             icon?.setColorFilter(alertColor!!, PorterDuff.Mode.DST)
